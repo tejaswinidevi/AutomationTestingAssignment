@@ -1,7 +1,7 @@
-Feature: Login Validations
+Feature: New Account Creation Valdaitions
 
-  @AccountCreationSuccessfulWithUniqueFields
-  Scenario: Account is created with randome firstName, lastName, email and password and the account creation is successful
+  @NewAccountCreation @Positive @NewAccountCreationPositive @AccountCreationSuccessfulWithValidFields
+  Scenario: Account successfully created with all valid and unique fields
     Given the user navigates to the software testing board home page
     Then the user Creates an Account
     When the user creates random alphanumericString of size 8 and stores it to {firstName}
@@ -20,7 +20,7 @@ Feature: Login Validations
       | Name  | {firstName} {lastName} |
       | Email | {emailId}              |
 
-  @AccountCreationSuccessfulWithDifferentMaildIdAndSameFields
+  @NewAccountCreation @Positive @NewAccountCreationPositive @AccountReCreationSuccessfulWithDifferentMaildIdAndSameFields
   Scenario Outline: Account is recreated with same firstName, lastName password and random different email and the account creation is successful
     Given the user navigates to the software testing board home page
     Then the user Creates an Account
@@ -55,7 +55,7 @@ Feature: Login Validations
       | firstName | lastName | password      | confirmPassword |
       | Tim       | Walter   | JohnPaul@7419 | JohnPaul@7419   |
 
-  @AccountCreationFailWithSameMaildIdAndSameFields
+  @NewAccountCreation @Negative @NewAccountCreationNegative @AccountReCreationFailWithSameMaildIdAndSameFields
   Scenario Outline: Account is recreated with same firstName, lastName, password, email and the account creation failed
     Given the user navigates to the software testing board home page
     Then the user Creates an Account
@@ -86,8 +86,8 @@ Feature: Login Validations
       | firstName | lastName | password      | confirmPassword |
       | Tim       | Walter   | JohnPaul@7419 | JohnPaul@7419   |
 
-  @AccountCreationFailWithSameMaildIdAndDifferentFields
-  Scenario: Account is recreated with random firstName, lastName, password and same password and the account creation failed
+  @NewAccountCreation @Negative @NewAccountCreationNegative @AccountReCreationFailWithSameMaildIdAndDifferentFields
+  Scenario: Account is recreated with different firstName, lastName, password but same emailId and the account creation failed
     Given the user navigates to the software testing board home page
     Then the user Creates an Account
     When the user creates random alphanumericString of size 8 and stores it to {firstName1}
@@ -119,10 +119,10 @@ Feature: Login Validations
     Then the user clicks on Create an Account button
     Then verfiy the account creation failed with the msg 'There is already an account with this email address. If you are sure that it is your email address, click here to get your password and access your account.'
 
-  @SuccessfulLogin&Logout
-  Scenario: Account creation successful, Sign out, Sign In with the created account details, Login is successful and the details are correct
+  @NewAccountCreation @Positive @NewAccountCreationPositive @AccountCreationSuccessfulWithMediumStrongVeryStrongPasswords
+  Scenario Outline: Account creation successful for Medium, Strong, Very Strong passwords
     Given the user navigates to the software testing board home page
-    Then the user Creates an Account
+    When the user Creates an Account
     When the user creates random alphanumericString of size 8 and stores it to {firstName}
     When the user creates random alphanumericString of size 10 and stores it to {lastName}
     When the user creates random mailId and stores it to {emailId}
@@ -131,43 +131,23 @@ Feature: Login Validations
       | First Name       | {firstName} |
       | Last Name        | {lastName}  |
       | Email            | {emailId}   |
-      | Password         | {password}  |
-      | Confirm Password | {password}  |
+      | Password         | <password>  |
+      | Confirm Password | <password>  |
+    Then the user checks the password strength to be <passwordStrength>
     Then the user clicks on Create an Account button
     Then verfiy the account creation successful with the msg 'Thank you for registering with Main Website Store.'
     Then verify the contact details with the following data:
       | Name  | {firstName} {lastName} |
       | Email | {emailId}              |
-    When the user signs out of the account
-    Then the user SignsIn an Account
-    When the user fills in the personal information with the following details on SignIn Page:
-      | Email    | {emailId}  |
-      | Password | {password} |
-    Then the user clicks on SignIn button
-    Then verify the contact details with the following data:
-      | Name  | {firstName} {lastName} |
-      | Email | {emailId}              |
-
-  @RequiredFieldValidationsForSignIn
-  Scenario Outline: Required Field Validations for Sign In
-    Given the user navigates to the software testing board home page
-    Then the user SignsIn an Account
-    When the user fills in the personal information with the following details on SignIn Page:
-      | Email    | <emailId>  |
-      | Password | <password> |
-    Then the user clicks on SignIn button
-    Then the user sees the required field error msg on the following fields on SignIn Page:
-      | Email    | <emailError>    |
-      | Password | <passwordError> |
 
     Examples: 
-      | emailId          | password      | emailError                | passwordError             |
-      |                  |               | This is a required field. | This is a required field. |
-      | test@example.com |               | NA                        | This is a required field. |
-      |                  | JohnPaul@7419 | This is a required field. | NA                        |
+      | password       | passwordStrength |
+      | John@12345     | Medium           |
+      | @Johntest      | Strong           |
+      | @Johntesttry09 | Very Strong      |
 
-  @RequiredFieldValidations
-  Scenario Outline: Required Field Validations
+  @NewAccountCreation @Negative @NewAccountCreationNegative @RequiredFieldValidationsForAccountCreation
+  Scenario Outline: Required Field Validations for Account creation
     Given the user navigates to the software testing board home page
     When the user Creates an Account
     When the user fills in the personal information with the following details:
@@ -218,8 +198,8 @@ Feature: Login Validations
       | John      |          |                         |              |                 | NA                        | This is a required field. | This is a required field. | This is a required field. | This is a required field.          |
       |           |          |                         |              |                 | This is a required field. | This is a required field. | This is a required field. | This is a required field. | This is a required field.          |
 
-  @InvalidEmailFormatWhenCreatingAccount
-  Scenario Outline: Invalid Email format when creating an account
+  @NewAccountCreation @Negative @NewAccountCreationNegative @InvalidEmailFormatWhenCreatingAccount
+  Scenario Outline: Error message validation for Invalid Email format when creating an account
     Given the user navigates to the software testing board home page
     When the user Creates an Account
     When the user fills in the personal information with the following details:
@@ -242,8 +222,8 @@ Feature: Login Validations
       |           |          | john2434 |              |                 | This is a required field. | This is a required field. | Please enter a valid email address (Ex: johndoe@domain.com). | This is a required field. | This is a required field.          |
       |           |          | john2434 |              | JohnPaul7419    | This is a required field. | This is a required field. | Please enter a valid email address (Ex: johndoe@domain.com). | This is a required field. | Please enter the same value again. |
 
-  @PasswordStrengthValidations
-  Scenario Outline: Weak, Medium, Strong, Very Strong password validations
+  @NewAccountCreation @Negative @NewAccountCreationNegative @PasswordStrengthValidations
+  Scenario Outline: Banner validations for Weak, Medium, Strong, Very Strong passwords
     Given the user navigates to the software testing board home page
     When the user Creates an Account
     When the user fills in the personal information with the following details:
@@ -264,3 +244,47 @@ Feature: Login Validations
       | John      | Paul     | john2434.paul@gmail.com | John@12345     | John@12345      | NA                                                                                                                                      | Medium           |
       | John      | Paul     | john2434.paul@gmail.com | @Johntest      | @Johntest       | NA                                                                                                                                      | Strong           |
       | John      | Paul     | john2434.paul@gmail.com | @Johntesttry09 | @Johntesttry09  | NA                                                                                                                                      | Very Strong      |
+
+  @NewAccountCreation @Negative @NewAccountCreationNegative @PasswordAndConfirmPasswordAreDifferent
+  Scenario: Error message validation when password and confirm password are different
+    Given the user navigates to the software testing board home page
+    Then the user Creates an Account
+    When the user creates random alphanumericString of size 8 and stores it to {firstName}
+    When the user creates random alphanumericString of size 10 and stores it to {lastName}
+    When the user creates random mailId and stores it to {emailId}
+    When the user creates random password of length 10 and stores it to {password1}
+    When the user creates random password of length 10 and stores it to {password2}
+    When the user fills in the personal information with the following details:
+      | First Name       | {firstName} |
+      | Last Name        | {lastName}  |
+      | Email            | {emailId}   |
+      | Password         | {password1} |
+      | Confirm Password | {password2} |
+    Then the user clicks on Create an Account button
+    Then the user sees the required field error msg on the following fields:
+      | First Name       | NA                                 |
+      | Last Name        | NA                                 |
+      | Email            | NA                                 |
+      | Password         | NA                                 |
+      | Confirm Password | Please enter the same value again. |
+
+  @NewAccountCreation @Negative @NewAccountCreationNegative @InvalidNamesWithSpecialCharacters
+  Scenario Outline: Error message validation when firstName and lastName are invalid with special characters
+    Given the user navigates to the software testing board home page
+    Then the user Creates an Account
+    When the user creates random mailId and stores it to {emailId}
+    When the user creates random password of length 10 and stores it to {password}
+    When the user fills in the personal information with the following details:
+      | First Name       | <firstName> |
+      | Last Name        | <lastName>  |
+      | Email            | {emailId}   |
+      | Password         | {password}  |
+      | Confirm Password | {password}  |
+    Then the user clicks on Create an Account button
+    Then verfiy the account creation failed with the msg '<alertMsg>'
+
+    Examples: 
+      | firstName | lastName | alertMsg                                         |
+      | John@123  | Paul     | First Name is not valid!                         |
+      | John      | Paul@123 | Last Name is not valid!                          |
+      | John@123  | Paul@123 | First Name is not valid! Last Name is not valid! |

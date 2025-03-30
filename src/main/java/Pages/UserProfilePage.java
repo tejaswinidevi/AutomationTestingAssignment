@@ -23,7 +23,7 @@ public class UserProfilePage extends BaseTest {
 	public static String customerWelcomeDropDown = "//button[@data-action='customer-menu-toggle'] [@class='action switch']";
 	public static String signOut = "//li[@class=\"authorization-link\"]//a[contains(text(), 'Sign Out')]";
 	
-	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 
 	public String AccountCreationAlertMsg(String status) {
 		if(status.equalsIgnoreCase("successful")) {

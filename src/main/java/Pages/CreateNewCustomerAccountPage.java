@@ -1,5 +1,6 @@
 package Pages;
 
+import java.time.Duration;
 import java.util.Map;
 
 import org.junit.internal.runners.statements.Fail;
@@ -8,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import StepDefinitions.BaseTest;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -23,9 +26,11 @@ public class CreateNewCustomerAccountPage extends BaseTest {
 	public static String firstNameErrorMsg = "//div[@id='firstname-error']";
 	public static String lastNameErrorMsg = "//div[@id='lastname-error']";
 	public static String emailErrorMsg = "//div[@id='email_address-error']";
-	public static String passwordErrorMsg = "//div[@id='password-error' and contains(@style,'display: block;')]";
+	public static String passwordErrorMsg = "//div[@id='password-error']";
 	public static String confirmPasswordErrorMsg = "//div[@id='password-confirmation-error']";
 	public static String passwordStrengthMeter = "//div[@id='password-strength-meter-container']";
+
+	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 	public void fillInTheDetailsForNewCustomerAccount(Map<String, String> userDetails) {
 		userDetails.forEach((key, value) -> {
@@ -68,40 +73,56 @@ public class CreateNewCustomerAccountPage extends BaseTest {
 	}
 
 	public void clickCreateanAccountButton() {
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(createAnAccountButton)));
 		driver.findElement(By.xpath(createAnAccountButton)).click();
 	}
 
-	public String checkForRequiredFieldErrorMsgOnField(String field) {
+	public String checkForRequiredFieldErrorMsgOnField(String field, String expecetedErrorMsg) {
 		switch (field) {
 		case "First Name":
-			if (!driver.findElements(By.xpath(firstNameErrorMsg)).isEmpty()) {
+			if (!expecetedErrorMsg.equalsIgnoreCase("NA")) {
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(firstNameErrorMsg)));
 				return driver.findElement(By.xpath(firstNameErrorMsg)).getText();
 			} else {
-				return "NA";
+				if (driver.findElements(By.xpath(firstNameErrorMsg)).isEmpty()) {
+					return "NA";
+				}
 			}
 		case "Last Name":
-			if (!driver.findElements(By.xpath(lastNameErrorMsg)).isEmpty()) {
+			if (!expecetedErrorMsg.equalsIgnoreCase("NA")) {
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(lastNameErrorMsg)));
 				return driver.findElement(By.xpath(lastNameErrorMsg)).getText();
 			} else {
-				return "NA";
+				if (driver.findElements(By.xpath(lastNameErrorMsg)).isEmpty()) {
+					return "NA";
+				}
 			}
 		case "Email":
-			if (!driver.findElements(By.xpath(emailErrorMsg)).isEmpty()) {
+			if (!expecetedErrorMsg.equalsIgnoreCase("NA")) {
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(emailErrorMsg)));
 				return driver.findElement(By.xpath(emailErrorMsg)).getText();
 			} else {
-				return "NA";
+				if (driver.findElements(By.xpath(emailErrorMsg)).isEmpty()) {
+					return "NA";
+				}
 			}
 		case "Password":
-			if (!driver.findElements(By.xpath(passwordErrorMsg)).isEmpty()) {
+			if (!expecetedErrorMsg.equalsIgnoreCase("NA")) {
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(passwordErrorMsg)));
 				return driver.findElement(By.xpath(passwordErrorMsg)).getText();
 			} else {
-				return "NA";
+				if (driver.findElement(By.xpath(passwordErrorMsg)).getAttribute("style").equals("display: none;")) {
+					return "NA";
+				}
 			}
 		case "Confirm Password":
-			if (!driver.findElements(By.xpath(confirmPasswordErrorMsg)).isEmpty()) {
+			if (!expecetedErrorMsg.equalsIgnoreCase("NA")) {
+				wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(confirmPasswordErrorMsg)));
 				return driver.findElement(By.xpath(confirmPasswordErrorMsg)).getText();
 			} else {
-				return "NA";
+				if (driver.findElements(By.xpath(confirmPasswordErrorMsg)).isEmpty()) {
+					return "NA";
+				}
 			}
 		default:
 			throw new RuntimeException("Invalid Input");
@@ -109,6 +130,7 @@ public class CreateNewCustomerAccountPage extends BaseTest {
 	}
 
 	public String getPasswordStrength() {
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(passwordStrengthMeter)));
 		return driver.findElement(By.xpath(passwordStrengthMeter)).getText();
 	}
 }

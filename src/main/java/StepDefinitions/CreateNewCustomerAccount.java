@@ -43,7 +43,7 @@ public class CreateNewCustomerAccount {
 		Map<String, String> expectedFields = fields.asMap(String.class, String.class);
 		expectedFields.forEach((field, expectation) -> {
 			assertEquals("Required Field is not filled", expectation,
-					createNewCustomerAccount.checkForRequiredFieldErrorMsgOnField(field));
+					createNewCustomerAccount.checkForRequiredFieldErrorMsgOnField(field,expectation));
 		});
 	}
 

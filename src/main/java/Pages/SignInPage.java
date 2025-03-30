@@ -1,5 +1,6 @@
 package Pages;
 
+import java.time.Duration;
 import java.util.Map;
 
 import org.junit.internal.runners.statements.Fail;
@@ -8,6 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import StepDefinitions.BaseTest;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -19,6 +22,11 @@ public class SignInPage extends BaseTest {
 	public static String createAnAccountButton = "//button[@name='send']";
 	public static String emailErrorMsg = "//div[@id='email-error']";
 	public static String passwordErrorMsg = "//div[@id='pass-error']";
+	public static String alert = "//div[@role='alert']";
+	public static String myAccountPageTitle = "//h1[@class='page-title']";
+	public static String forgortPassword = "//a/span[text()='Forgot Your Password?']";
+	
+	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 	public void fillInTheDetailsForSignIn(Map<String, String> userDetails) {
 		userDetails.forEach((key, value) -> {
@@ -62,5 +70,19 @@ public class SignInPage extends BaseTest {
 		default:
 			throw new RuntimeException("Invalid Input");
 		}
+	}
+	
+	public String signInAlertMsg(String status) {
+		if(status.equalsIgnoreCase("successful")) {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(myAccountPageTitle)));
+		}else if(status.equalsIgnoreCase("failed")) {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(alert)));
+		}
+		return driver.findElement(By.xpath(alert)).getText();
+	}
+	
+	public void clicksForgotPassword() {
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(forgortPassword)));
+		driver.findElement(By.xpath(forgortPassword)).click();
 	}
 }
