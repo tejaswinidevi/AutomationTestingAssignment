@@ -3,23 +3,20 @@ package StepDefinitions;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
 import java.util.Map;
 
-import Pages.CreateNewCustomerAccountPage;
-import Pages.HomePage;
-import Pages.UserProfilePage;
-import io.cucumber.java.en.Given;
+import Pages.CreateCustomerAccountPage;
+import Pages.MyAccountPage;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import util.TestVariables;
 import io.cucumber.datatable.DataTable;
 
-public class UserPage {
+public class MyAccountStepDefinitions {
 
-	UserProfilePage userProfilePage = new UserProfilePage();
+	MyAccountPage userProfilePage = new MyAccountPage();
 
-	CreateNewCustomerAccountPage createNewCustomerAccount = new CreateNewCustomerAccountPage();
+	CreateCustomerAccountPage createNewCustomerAccount = new CreateCustomerAccountPage();
 
 	@Then("^verfiy the account creation (successful|failed) with the msg '([\\w\\s\\S]+)'$")
 	public void successfulAccountCreationMsg(String status,String msg) {

@@ -8,7 +8,7 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(
     features = "src/test/resources/Features", // Path to your feature files
     glue = "StepDefinitions", // Path to your step definitions
-    tags = "@SignIn"
+    tags = "@NewAccountCreation"
 )
 public class RunCucumberTest {
 }

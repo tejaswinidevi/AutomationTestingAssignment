@@ -2,14 +2,10 @@ package StepDefinitions;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import Pages.CreateNewCustomerAccountPage;
-import Pages.HomePage;
 import Pages.SignInPage;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import util.TestVariables;

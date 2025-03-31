@@ -2,21 +2,18 @@ package StepDefinitions;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import Pages.CreateNewCustomerAccountPage;
-import Pages.HomePage;
-import io.cucumber.java.en.Given;
+import Pages.CreateCustomerAccountPage;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import util.TestVariables;
 import io.cucumber.datatable.DataTable;
 
-public class CreateNewCustomerAccount {
+public class CreateCustomerAccountStepDefinitions {
 
-	CreateNewCustomerAccountPage createNewCustomerAccount = new CreateNewCustomerAccountPage();
+	CreateCustomerAccountPage createNewCustomerAccount = new CreateCustomerAccountPage();
 
 	@When("^the user fills in the personal information with the following details:$")
 	public void fillDetailstoCreateNewCustomerAccount(DataTable userDetails) {

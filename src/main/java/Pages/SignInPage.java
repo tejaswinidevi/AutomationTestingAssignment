@@ -3,29 +3,25 @@ package Pages;
 import java.time.Duration;
 import java.util.Map;
 
-import org.junit.internal.runners.statements.Fail;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import StepDefinitions.BaseTest;
-import io.github.bonigarcia.wdm.WebDriverManager;
+import Locators.Locators;
 
 public class SignInPage extends BaseTest {
 
-	public static String email = "//input[@name='login[username]']";
-	public static String password = "//input[@name='login[password]']";
-	public static String createAnAccountButton = "//button[@name='send']";
-	public static String emailErrorMsg = "//div[@id='email-error']";
-	public static String passwordErrorMsg = "//div[@id='pass-error']";
-	public static String alert = "//div[@role='alert']";
-	public static String myAccountPageTitle = "//h1[@class='page-title']";
-	public static String forgortPassword = "//a/span[text()='Forgot Your Password?']";
-	
+	WebElement email = driver.findElement(By.xpath(Locators.SIGNIN_EMAIL));
+	WebElement password = driver.findElement(By.xpath(Locators.SIGNIN_PASSWORD));
+	WebElement createAnAccountButton = driver.findElement(By.xpath(Locators.SIGNIN_CREATE_AN_ACCOUNT_BUTTON));
+	WebElement emailErrorMsg = driver.findElement(By.xpath(Locators.SIGNIN_EMAIL_ERRORMSG));
+	WebElement passwordErrorMsg = driver.findElement(By.xpath(Locators.SIGNIN_PASSWORD_ERRORMSG));
+	WebElement alert = driver.findElement(By.xpath(Locators.MYACCOUNT_ALERT));
+	WebElement myAccountPageTitle = driver.findElement(By.xpath(Locators.MYACCOUNT_TITLE));
+	WebElement forgortPassword = driver.findElement(By.xpath(Locators.SIGNIN_FORGOT_PASSWORD));
+
 	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 	public void fillInTheDetailsForSignIn(Map<String, String> userDetails) {
@@ -33,14 +29,14 @@ public class SignInPage extends BaseTest {
 			switch (key) {
 			case "Email":
 				if (value != null) {
-					driver.findElement(By.xpath(email)).clear();
-					driver.findElement(By.xpath(email)).sendKeys(userDetails.get("Email"));
+					email.clear();
+					email.sendKeys(userDetails.get("Email"));
 				}
 				break;
 			case "Password":
 				if (value != null) {
-					driver.findElement(By.xpath(password)).clear();
-					driver.findElement(By.xpath(password)).sendKeys(userDetails.get("Password"));
+					password.clear();
+					password.sendKeys(userDetails.get("Password"));
 				}
 				break;
 			default:
@@ -50,20 +46,20 @@ public class SignInPage extends BaseTest {
 	}
 
 	public void clickSignInButton() {
-		driver.findElement(By.xpath(createAnAccountButton)).click();
+		createAnAccountButton.click();
 	}
 
 	public String checkForRequiredFieldErrorMsgOnField(String field) {
 		switch (field) {
 		case "Email":
-			if (!driver.findElements(By.xpath(emailErrorMsg)).isEmpty()) {
-				return driver.findElement(By.xpath(emailErrorMsg)).getText();
+			if (!driver.findElements(By.xpath(Locators.SIGNIN_EMAIL_ERRORMSG)).isEmpty()) {
+				return emailErrorMsg.getText();
 			} else {
 				return "NA";
 			}
 		case "Password":
-			if (!driver.findElements(By.xpath(passwordErrorMsg)).isEmpty()) {
-				return driver.findElement(By.xpath(passwordErrorMsg)).getText();
+			if (!driver.findElements(By.xpath(Locators.SIGNIN_PASSWORD_ERRORMSG)).isEmpty()) {
+				return passwordErrorMsg.getText();
 			} else {
 				return "NA";
 			}
@@ -71,18 +67,18 @@ public class SignInPage extends BaseTest {
 			throw new RuntimeException("Invalid Input");
 		}
 	}
-	
+
 	public String signInAlertMsg(String status) {
-		if(status.equalsIgnoreCase("successful")) {
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(myAccountPageTitle)));
-		}else if(status.equalsIgnoreCase("failed")) {
-			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(alert)));
+		if (status.equalsIgnoreCase("successful")) {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Locators.MYACCOUNT_TITLE)));
+		} else if (status.equalsIgnoreCase("failed")) {
+			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Locators.MYACCOUNT_ALERT)));
 		}
-		return driver.findElement(By.xpath(alert)).getText();
+		return alert.getText();
 	}
-	
+
 	public void clicksForgotPassword() {
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(forgortPassword)));
-		driver.findElement(By.xpath(forgortPassword)).click();
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Locators.SIGNIN_FORGOT_PASSWORD)));
+		forgortPassword.click();
 	}
 }
