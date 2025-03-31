@@ -3,26 +3,22 @@ package StepDefinitions;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import Pages.ForgotPasswordPage;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import util.TestVariables;
+import util.CommonUtility;
 import io.cucumber.datatable.DataTable;
 
 public class ForgotPasswordStepDefinitions {
 	
 	ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage();
+	CommonUtility commonUtility = new CommonUtility();
 	
 	@When("^the user fills in the personal information with the following details on Forgot Password Page:$")
 	public void fillDetailstoSignIn(DataTable userDetails) {
 		Map<String,String> userDetailsForSignIn = userDetails.asMap(String.class,String.class);
-		Map<String,String> updatedMap = userDetailsForSignIn.entrySet().stream().filter(entry -> entry.getValue() != null)
-			    .collect(Collectors.toMap(
-			        Map.Entry::getKey,  // Extract key as is
-			        entry -> TestVariables.map.containsKey(entry.getValue().replace("{", "").replace("}", "").trim()) ? TestVariables.map.get(entry.getValue().replace("{", "").replace("}", "").trim()).toString() : entry.getValue().toString()
-			    ));
+		Map<String, String> updatedMap = commonUtility.mapWithaValues(userDetailsForSignIn);
 		forgotPasswordPage.fillInTheDetailsForForgotPassword(updatedMap);
 	}
 	

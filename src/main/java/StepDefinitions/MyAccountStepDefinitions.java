@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
-import Pages.CreateCustomerAccountPage;
 import Pages.MyAccountPage;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -15,8 +14,6 @@ import io.cucumber.datatable.DataTable;
 public class MyAccountStepDefinitions {
 
 	MyAccountPage userProfilePage = new MyAccountPage();
-
-	CreateCustomerAccountPage createNewCustomerAccount = new CreateCustomerAccountPage();
 
 	@Then("^verfiy the account creation (successful|failed) with the msg '([\\w\\s\\S]+)'$")
 	public void successfulAccountCreationMsg(String status,String msg) {

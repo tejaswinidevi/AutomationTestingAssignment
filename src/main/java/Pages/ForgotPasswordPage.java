@@ -13,15 +13,13 @@ import StepDefinitions.BaseTest;
 
 public class ForgotPasswordPage extends BaseTest {
 
-	WebElement forgotPasswordTitle = driver.findElement(By.xpath(Locators.FORGOTPASSWORD_TITLE));
 	WebElement email = driver.findElement(By.xpath(Locators.FORGOTPASSWORD_EMAIL));
 	WebElement resetPassword = driver.findElement(By.xpath(Locators.FORGOTPASSWORD_RESETPASSWORD));
-	WebElement emailErrorMsg = driver.findElement(By.xpath(Locators.FORGOTPASSWORD_EMAIL_ERRORMSG));
 
 	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 	public void fillInTheDetailsForForgotPassword(Map<String, String> userDetails) {
-		wait.until(ExpectedConditions.presenceOfElementLocated((By) forgotPasswordTitle));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Locators.FORGOTPASSWORD_TITLE)));
 
 		userDetails.forEach((key, value) -> {
 			switch (key) {
@@ -38,16 +36,16 @@ public class ForgotPasswordPage extends BaseTest {
 	}
 
 	public void clickResetPassword() {
-		wait.until(ExpectedConditions.presenceOfElementLocated((By) forgotPasswordTitle));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Locators.FORGOTPASSWORD_TITLE)));
 		resetPassword.click();
 	}
 
 	public String checkForRequiredFieldErrorMsgOnField(String field) {
-		wait.until(ExpectedConditions.presenceOfElementLocated((By) forgotPasswordTitle));
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Locators.FORGOTPASSWORD_TITLE)));
 		switch (field) {
 		case "Email":
 			if (!driver.findElements(By.xpath(Locators.FORGOTPASSWORD_EMAIL_ERRORMSG)).isEmpty()) {
-				return emailErrorMsg.getText();
+				return driver.findElement(By.xpath(Locators.FORGOTPASSWORD_EMAIL_ERRORMSG)).getText();
 			} else {
 				return "NA";
 			}

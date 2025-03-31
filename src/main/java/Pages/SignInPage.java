@@ -16,14 +16,11 @@ public class SignInPage extends BaseTest {
 	WebElement email = driver.findElement(By.xpath(Locators.SIGNIN_EMAIL));
 	WebElement password = driver.findElement(By.xpath(Locators.SIGNIN_PASSWORD));
 	WebElement createAnAccountButton = driver.findElement(By.xpath(Locators.SIGNIN_CREATE_AN_ACCOUNT_BUTTON));
-	WebElement emailErrorMsg = driver.findElement(By.xpath(Locators.SIGNIN_EMAIL_ERRORMSG));
-	WebElement passwordErrorMsg = driver.findElement(By.xpath(Locators.SIGNIN_PASSWORD_ERRORMSG));
-	WebElement alert = driver.findElement(By.xpath(Locators.MYACCOUNT_ALERT));
 	WebElement myAccountPageTitle = driver.findElement(By.xpath(Locators.MYACCOUNT_TITLE));
 	WebElement forgortPassword = driver.findElement(By.xpath(Locators.SIGNIN_FORGOT_PASSWORD));
 
 	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
+	
 	public void fillInTheDetailsForSignIn(Map<String, String> userDetails) {
 		userDetails.forEach((key, value) -> {
 			switch (key) {
@@ -53,13 +50,13 @@ public class SignInPage extends BaseTest {
 		switch (field) {
 		case "Email":
 			if (!driver.findElements(By.xpath(Locators.SIGNIN_EMAIL_ERRORMSG)).isEmpty()) {
-				return emailErrorMsg.getText();
+				return driver.findElement(By.xpath(Locators.SIGNIN_EMAIL_ERRORMSG)).getText();
 			} else {
 				return "NA";
 			}
 		case "Password":
 			if (!driver.findElements(By.xpath(Locators.SIGNIN_PASSWORD_ERRORMSG)).isEmpty()) {
-				return passwordErrorMsg.getText();
+				return driver.findElement(By.xpath(Locators.SIGNIN_PASSWORD_ERRORMSG)).getText();
 			} else {
 				return "NA";
 			}
@@ -74,7 +71,7 @@ public class SignInPage extends BaseTest {
 		} else if (status.equalsIgnoreCase("failed")) {
 			wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Locators.MYACCOUNT_ALERT)));
 		}
-		return alert.getText();
+		return driver.findElement(By.xpath(Locators.MYACCOUNT_ALERT)).getText();
 	}
 
 	public void clicksForgotPassword() {

@@ -13,46 +13,44 @@ import Locators.Locators;
 
 public class CreateCustomerAccountPage extends BaseTest {
 
-	WebElement firstName = driver.findElement(By.xpath(Locators.CREATEACCOUNT_FIRSTNAME));
-	WebElement lastName = driver.findElement(By.xpath(Locators.CREATEACCOUNT_LASTNAME));
-	WebElement email = driver.findElement(By.xpath(Locators.CREATEACCOUNT_EMAIL));
-	WebElement password = driver.findElement(By.xpath(Locators.CREATEACCOUNT_PASSWORD));
-	WebElement confirmPassword = driver.findElement(By.xpath(Locators.CREATEACCOUNT_CONFIRMPASSWORD));
-
 	WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	
+	public CreateCustomerAccountPage() {
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Locators.MYACCOUNT_TITLE)));
+	}
 
 	public void fillInTheDetailsForNewCustomerAccount(Map<String, String> userDetails) {
 		userDetails.forEach((key, value) -> {
 			switch (key) {
 			case "First Name":
 				if (value != null) {
-					firstName.clear();
-					firstName.sendKeys(userDetails.get("First Name"));
+					driver.findElement(By.xpath(Locators.CREATEACCOUNT_FIRSTNAME)).clear();
+					driver.findElement(By.xpath(Locators.CREATEACCOUNT_FIRSTNAME)).sendKeys(userDetails.get("First Name"));
 				}
 
 				break;
 			case "Last Name":
 				if (value != null) {
-					lastName.clear();
-					lastName.sendKeys(userDetails.get("Last Name"));
+					driver.findElement(By.xpath(Locators.CREATEACCOUNT_LASTNAME)).clear();
+					driver.findElement(By.xpath(Locators.CREATEACCOUNT_LASTNAME)).sendKeys(userDetails.get("Last Name"));
 				}
 				break;
 			case "Email":
 				if (value != null) {
-					email.clear();
-					email.sendKeys(userDetails.get("Email"));
+					driver.findElement(By.xpath(Locators.CREATEACCOUNT_EMAIL)).clear();
+					driver.findElement(By.xpath(Locators.CREATEACCOUNT_EMAIL)).sendKeys(userDetails.get("Email"));
 				}
 				break;
 			case "Password":
 				if (value != null) {
-					password.clear();
-					password.sendKeys(userDetails.get("Password"));
+					driver.findElement(By.xpath(Locators.CREATEACCOUNT_PASSWORD)).clear();
+					driver.findElement(By.xpath(Locators.CREATEACCOUNT_PASSWORD)).sendKeys(userDetails.get("Password"));
 				}
 				break;
 			case "Confirm Password":
 				if (value != null) {
-					confirmPassword.clear();
-					confirmPassword.sendKeys(userDetails.get("Confirm Password"));
+					driver.findElement(By.xpath(Locators.CREATEACCOUNT_CONFIRMPASSWORD)).clear();
+					driver.findElement(By.xpath(Locators.CREATEACCOUNT_CONFIRMPASSWORD)).sendKeys(userDetails.get("Confirm Password"));
 				}
 				break;
 			default:
